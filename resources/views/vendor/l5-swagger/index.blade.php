@@ -134,10 +134,10 @@
 
 
                 // Temporarily add Authorization header
-                request.headers['Authorization'] = 'Bearer 9|KtsxWnMOho7sBLG7jk7I8v0GyVSql4JehVhv63iob26acdad';
+                // request.headers['Authorization'] = 'Bearer 9|KtsxWnMOho7sBLG7jk7I8v0GyVSql4JehVhv63iob26acdad';
 
                 // Temporarily add X-API-KEY header
-                request.headers['X-API-KEY'] = 'TMS-SECRET-API-KEY';
+                // request.headers['X-API-KEY'] = 'TMS-SECRET-API-KEY';
 
                 return request;
             },

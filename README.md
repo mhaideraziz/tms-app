@@ -1,66 +1,141 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Translation Management Service
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Translation Management Service is an API-centric application designed to streamline the management of translations. This service includes features for user authentication, translation creation, updates, and JSON export. It focuses on scalability, security, and ease of integration.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Authentication**: Secure login and logout functionality with token-based authentication.
+- **User Management**: Create and manage users.
+- **Translation Management**:
+    - Add translations with support for multiple languages.
+    - Search translations by key, tags, or content.
+    - Update or delete existing translations.
+    - Export translations in JSON format with optional filtering.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## API Documentation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The full API documentation is available in the `api-docs.json` file. You can access the Swagger UI for interactive documentation at the following link:
+   ```bash
+   for Local https://tms-app.test/api/documentation
+   for Server https://tms.reportfunds.com/public/api/documentation
+   ```
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone the repository:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+   ```bash
+   git clone https://github.com/your-repo/translation-management-service.git
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Navigate to the project directory:
 
-## Laravel Sponsors
+   ```bash
+   cd translation-management-service
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. Install dependencies:
 
-### Premium Partners
+   ```bash
+   composer install
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+4. Set up your environment variables:
 
-## Contributing
+    - Copy the `.env.example` file to `.env`:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+      ```bash
+      cp .env.example .env
+      ```
 
-## Code of Conduct
+    - Update the `.env` file with your database and other configuration details.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. Run database migrations:
 
-## Security Vulnerabilities
+   ```bash
+   php artisan migrate
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+6. Seed the database with test data (optional):
 
-## License
+   ```bash
+   php artisan db:seed
+   ```
+**Note:** Run the `db:seed` command twice to generate 100,000 entries. This approach helps accommodate smaller server specifications.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+7. Start the development server:
+
+   ```bash
+   php artisan serve
+   ```
+
+8. Access the application at [http://localhost:8000](http://localhost:8000).
+
+## Usage
+
+### Authentication
+
+- **Login**: POST `/api/login` with `email` and `password`.
+- **Logout**: POST `/api/logout` with the Bearer token.
+### Register User
+
+To create a new user, use the following API endpoint:
+
+**Endpoint**: `POST /api/register`
+
+**Request Body**:
+
+```json
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "securepassword123",
+  "password_confirmation": "securepassword123"
+}
+```
+
+### API Key Usage
+
+All protected endpoints require the `Authorization` header with a Bearer token and the `X-API-KEY` header.
+Example:
+
+```http
+Authorization: Bearer your-access-token
+X-API-KEY: TMS-SECRET-API-KEY
+```
+
+### Translations
+
+- **Create Translation**: POST `/api/translations`
+- **Update Translation**: PUT `/api/translations/{id}`
+- **Delete Translation**: DELETE `/api/translations/{id}`
+- **Search Translations**: GET `/api/translations/search`
+- **Export Translations**: GET `/api/translations/export`
+
+Refer to the `api-docs.json` file for detailed request and response examples.
+
+## Security
+
+This project uses:
+- JWT Bearer token for secure API access.
+- API keys for additional authentication.
+
+## Testing
+
+To run the tests:
+
+```bash
+php artisan test
+```
+
+## Folder Structure
+
+- **Controllers**: API logic for handling user requests (e.g., `AuthController`, `TranslationController`).
+- **Services**: Business logic layer (e.g., `AuthService`, `TranslationService`).
+- **Repositories**: Data access layer for interacting with the database (e.g., `AuthRepository`, `TranslationRepository`).
+- **Middleware**: Custom middleware like `ApiKeyMiddleware` for additional request validation.
+
+
+---
+
+For more information, contact the project maintainer at [mhaideraziz22@gmail.com](mailto:mhaideraziz22@gmail.com).
