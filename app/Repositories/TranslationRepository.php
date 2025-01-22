@@ -48,11 +48,11 @@ class TranslationRepository
         $query = Translation::query();
 
         if(!empty($criteria['key'])) {
-            $query->where('key', 'LIKE', $criteria->key . '%'); // Optimize for index use
+            $query->where('key', 'LIKE', $criteria['key'] . '%'); // Optimize for index use
         }
 
         if(!empty($criteria['tags'])) {
-            $query->where('tags', $criteria->tags);
+            $query->where('tags', $criteria['tags']);
         }
 
         $query->with(['languages' => function ($query) use ($criteria) {
