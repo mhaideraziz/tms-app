@@ -30,4 +30,6 @@ Route::middleware(['auth:sanctum', 'apikey'])->group(function () {
     Route::get('translations/search', [TranslationController::class, 'search']); // Search
     Route::get('translations/export', [TranslationController::class, 'export']); // JSON export
     Route::get('translations/{id}', [TranslationController::class, 'show']); // View
+    Route::delete('/translations/{id}', [TranslationController::class, 'destroy']);
+
 });
