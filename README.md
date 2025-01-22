@@ -15,9 +15,13 @@ Translation Management Service is an API-centric application designed to streaml
 ## API Documentation
 
 The full API documentation is available in the `api-docs.json` file. You can access the Swagger UI for interactive documentation at the following link:
-   ```bash
-   for Local https://tms-app.test/api/documentation
-   for Server https://tms.reportfunds.com/public/api/documentation
+- **localhost**   
+```bash
+    https://tms-app.test/api/documentation
+   ```
+- **Sever**
+```bash
+    https://tms.reportfunds.com/public/api/documentation
    ```
 
 ## Installation
