@@ -21,15 +21,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout']);
 Route::post('register', [AuthController::class, 'createUser']);
 
-Route::middleware(['auth:sanctum', 'apikey'])->group(function () {
-    Route::post('translations', [TranslationController::class, 'store']); // Create
-    Route::put('translations/{id}', [TranslationController::class, 'update']); // Update
-    Route::get('translations/search', [TranslationController::class, 'search']); // Search
-    Route::get('translations/export', [TranslationController::class, 'export']); // JSON export
-    Route::get('translations/{id}', [TranslationController::class, 'show']); // View
-    Route::delete('/translations/{id}', [TranslationController::class, 'destroy']);
-
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::middleware('apikey')->group(function () {
+        Route::post('translations', [TranslationController::class, 'store']); // Create
+        Route::put('translations/{id}', [TranslationController::class, 'update']); // Update
+        Route::get('translations/search', [TranslationController::class, 'search']); // Search
+        Route::get('translations/export', [TranslationController::class, 'export']); // JSON export
+        Route::get('translations/{id}', [TranslationController::class, 'show']); // View
+        Route::delete('/translations/{id}', [TranslationController::class, 'destroy']);
+    });
 });
