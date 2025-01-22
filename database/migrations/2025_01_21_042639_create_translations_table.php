@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('key')->unique();
             $table->string('tags')->nullable();
             $table->timestamps();
+            // Adding an index to the 'key' column
+            $table->index('key');
         });
     }
 

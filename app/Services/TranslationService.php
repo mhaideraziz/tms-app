@@ -73,29 +73,55 @@ class TranslationService
         return response()->json($translations, 200);
     }
 
+//    public function exportTranslations($data)
+//    {
+//        $locale = $data['locale'] ?? null;
+//
+//        // Prepare export data
+//        $exportData = [];
+//
+//        $this->repository->getAllTranslationsWithLanguages($locale)->each(function ($translations) use (&$exportData) {
+//            foreach ($translations as $translation) {
+//                foreach ($translation->languages as $language) {
+//                    $exportData[$language->locale][$translation->key] = $language->content;
+//                }
+//            }
+//        });
+//
+//        return response()->json($exportData, 200);
+//    }
+
     public function exportTranslations($data)
     {
         $locale = $data['locale'] ?? 'en';
 
-        // Fetch translations
-        $translations = $this->repository->getAllTranslationsWithLanguages();
-
+        // Prepare export data
         $exportData = [];
 
-        foreach ($translations as $translation) {
-            foreach ($translation->languages as $language) {
-                // Filter by locale if specified
-                if ($locale && $language->locale !== $locale) {
-                    continue;
+        // Fetch and chunk data
+        $exportData = cache()->remember("translations_{$locale}", 3600, function () use ($locale) {
+            $translations = [];
+            $this->repository->getTranslationsWithLanguages($locale)->chunk(10000, function ($rows) use (&$translations) {
+                foreach ($rows as $row) {
+                    $translations[$row->locale][$row->key] = $row->content;
                 }
+            });
+            return $translations;
+        });
 
-                // Group translations by locale
-                $exportData[$language->locale][$translation->key] = $language->content;
+        // Fetch new entries added in the last hour and merge with cached data
+        $newEntries = $this->repository->getRecentTranslations($locale, now()->subMinutes(5))->get();
+        if(count($newEntries) > 0){
+            foreach ($newEntries as $entry) {
+                $exportData[$entry->locale][$entry->key] = $entry->content;
             }
         }
 
+
+        // Return JSON response
         return response()->json($exportData, 200);
     }
+
 
     public function deleteTranslation($id)
     {

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['translation_id', 'locale']); // Ensure no duplicate locales for a translation
+            // Adding an index to the 'locale' column
+            $table->index(['locale', 'translation_id']);
         });
     }
 

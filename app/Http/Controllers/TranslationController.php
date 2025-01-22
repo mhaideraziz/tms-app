@@ -312,9 +312,10 @@ class TranslationController extends Controller
     public function search(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'key' => 'nullable|string',
-            'tags' => 'nullable|string',
-            'content' => 'nullable|string',
+            'key' => 'nullable|string|max:255',
+            'tags' => 'nullable|string|max:255',
+            'locale' => 'nullable|string|max:10',
+            'content' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
