@@ -11,6 +11,11 @@ class TranslationLanguage extends Model
 
     protected $fillable = ['locale', 'content', 'translation_id'];
 
+    protected $casts = [
+        'created_at' => 'date:d-m-Y H:i:s',
+        'updated_at' => 'date:d-m-Y H:i:s'
+    ];
+
     public function translation()
     {
         return $this->belongsTo(Translation::class);

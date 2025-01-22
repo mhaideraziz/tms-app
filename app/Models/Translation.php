@@ -11,6 +11,11 @@ class Translation extends Model
 
     protected $fillable = ['key', 'tags'];
 
+    protected $casts = [
+        'created_at' => 'date:d-m-Y H:i:s',
+        'updated_at' => 'date:d-m-Y H:i:s'
+    ];
+
     public function languages()
     {
         return $this->hasMany(TranslationLanguage::class);
